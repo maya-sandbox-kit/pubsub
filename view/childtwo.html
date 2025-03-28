@@ -1,0 +1,35 @@
+<div style="padding: 15px; margin: 10px 0; background-color: #f0f8ff; border: 1px solid #cce7ff; border-radius: 8px; font-family: Arial, sans-serif;">
+    <h3 style="margin-top: 0; color: #007acc;">📊 List Overview - MFE</h3>
+  
+    <p class="{{#flash}}flash-count{{/flash}}" style="font-size: 16px; margin: 5px 0;">
+      The list currently contains 
+      <span style="font-weight: bold; color: #007acc;">{{listSize}}</span> 
+      {{#listSize}}
+        {{#plural}}items{{/plural}}{{^plural}}item{{/plural}}
+      {{/listSize}}.
+    </p>
+  
+    {{#latestItem}}
+    <div style="margin-top: 10px; font-size: 14px;">
+      <strong>🆕 Latest Item Added:</strong><br/>
+      <br>
+      <span><strong>Name:</strong> {{name}}</span><br/>
+      <br>
+      <span><strong>Description:</strong> {{description}}</span>
+    </div>
+    {{/latestItem}}
+  </div>
+  
+  
+  <style>
+    .flash-count {
+      animation: flash 2s ease;
+    }
+  
+    @keyframes flash {
+      0% { background-color: #e6f7ff; }
+      50% { background-color: #bae7ff; }
+      100% { background-color: #e6f7ff; }
+    }
+  </style>
+  

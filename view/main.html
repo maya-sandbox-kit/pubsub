@@ -1,0 +1,143 @@
+<h1 style="margin-left: 40%;">📦 Inventory Tracker</h1>
+
+<div class="layout-container">
+  <!-- Left Column -->
+  <div class="left-column">
+    <!-- Add Item Form -->
+    <section class="card">
+      <h3>Add New Item</h3>
+      <maya-form store="pubsub" operationId="addItem">
+        <div class="form-field">
+          <label><strong>Item Name</strong></label><br />
+          <maya-input name="name" store="pubsub">
+            <input type="text" placeholder="Item Name" required />
+          </maya-input>
+        </div>
+        <div class="form-field">
+          <label><strong>Item Description</strong></label><br />
+          <maya-input name="description" store="pubsub">
+            <input type="text" placeholder="Item Description" required />
+          </maya-input>
+        </div>
+        <maya-button store="pubsub" operationId="addItem">➕ Submit</maya-button>
+      </maya-form>
+    </section>
+
+    <!-- Item List Table -->
+    <section class="card">
+      <h3>📋 Item List</h3>
+      <div class="scrollable-table">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            {{#list}}
+              <tr>
+                <td>{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{description}}</td>
+              </tr>
+            {{/list}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Column -->
+  <div class="right-column">
+    <!-- Child MFE -->
+    <section class="card" style="padding: 0 15px 15px 15px;">
+      <albert-childtwo></albert-childtwo>
+    </section>
+
+    <!-- Event Log -->
+    <section class="card">
+      <h3>🧾 Pub-Sub Event Log</h3>
+      <div class="log-panel">
+        {{#log}}
+          <div class="log-line">{{.}}</div>
+        {{/log}}
+      </div>
+    </section>
+  </div>
+</div>
+
+
+<!-- Styles -->
+<style>
+   .layout-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.left-column, .right-column {
+  flex: 1 1 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.scrollable-table {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.log-panel {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.log-line {
+  margin-bottom: 4px;
+}
+
+</style>
