@@ -34,7 +34,7 @@ Maya.Store.pubsub = {
               headers
           });
           Maya.Store.pubsub.events.logMessage(ev.key)("📤 Published 'list-updated' (init)");
-          Maya.Store.Publish({ topic: 'list-updated' })({
+          await Maya.Store.Publish({ topic: 'list-updated' })({
               list: defaultItems,
               headers
           });
@@ -60,19 +60,19 @@ Maya.Store.pubsub = {
             Maya.Store.SetData({ store: 'pubsub', key: ev.key })({ list: currentList ,headers: currentData.headers});
             Maya.Store.pubsub.events.logMessage(ev.key)(`📤 Published 'list-updated' (added ${newItem.name})`);
             // Update the store with the modified list and re-render the UI
-            Maya.Store.Publish({ topic: 'list-updated' })({ list: currentList,headers: currentData.headers });
+            await Maya.Store.Publish({ topic: 'list-updated' })({ list: currentList,headers: currentData.headers });
         }
     },
   };
   
   
-  class MayaDebugger extends MayaMFE{
+  class MayaPubSub extends MayaMFE{
     constructor() {
         super()
         this.setView('main')
         this.setStore(Maya.Store.pubsub)
     }
-    getTitle = () => "MayaDebugger"
+    getTitle = () => "MayaPubSub"
     isSecured = () => false
   
     //No state management should be done in Component definition
@@ -81,7 +81,7 @@ Maya.Store.pubsub = {
     };
   }
   
-  window.customElements.define('albert-pubsub', MayaDebugger);
+  window.customElements.define('albert-pubsub', MayaPubSub);
   
   
   
@@ -105,7 +105,7 @@ Maya.Store.pubsub = {
       const key = ev.key;
       this._key = key;
       // ✅ Step 1: Subscribe to pubsub
-      Maya.Store.Subscribe({ topic: 'list-updated' })(this);
+      await Maya.Store.Subscribe({ topic: 'list-updated' })(this);
   
       // ✅ Step 2: Fallback — manually sync if parent already has data
       const currentList = Maya.Store.pubsub.data[key]?.list;
