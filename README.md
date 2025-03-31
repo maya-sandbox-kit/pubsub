@@ -131,5 +131,4 @@ Maya.Store.Publish({ topic: 'list-updated' })({
 
 ## 📎 Resources
 
-- 📘 [Maya Guide PDF](#)
-- 🧩 [Albert UI Components](https://dev.albertinventdev.com/albertui.html)
+- 📘 [Maya PubSub Guide](https://github.com/maya-dev-kit/mayadoc/blob/main/readme/maya-pubsub.md)
