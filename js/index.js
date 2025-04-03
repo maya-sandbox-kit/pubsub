@@ -101,13 +101,36 @@ Maya.Store.pubsub = {
     }
     isSecured = () => false
     // No state management should be done in Component definition
+    // onLoad = async (ev) => {
+    //   const key = ev.key;
+    //   this._key = key;
+    //   Maya.Store.Subscribe({ topic: 'list-updated' })(this);
+  
+    //   // ✅ Step 2: Fallback — manually sync if parent already has data
+    //   const currentList = Maya.Store.pubsub.data[key]?.list;
+    //   if (currentList?.length > 0) {
+    //     const latestItem = currentList[currentList.length - 1];
+    //     Maya.Store.SetData({ store: 'childtwo', key })({
+    //       listSize: currentList.length,
+    //       latestItem,
+    //       plural: currentList.length !== 1
+    //     });
+    //   }
+    // };
     onLoad = async (ev) => {
       const key = ev.key;
       this._key = key;
-      // ✅ Step 1: Subscribe to pubsub
-      await Maya.Store.Subscribe({ topic: 'list-updated' })(this);
-  
-      // ✅ Step 2: Fallback — manually sync if parent already has data
+    
+      const topic = 'list-updated';
+      const currentSubs = Maya.Store.subscriptions?.[topic] || [];
+    
+      const alreadySubscribed = currentSubs.some(sub => sub.getKey?.() === this.getKey());
+    
+      if (!alreadySubscribed) {
+        await Maya.Store.Subscribe({ topic })(this);
+      }
+    
+      // Fallback sync
       const currentList = Maya.Store.pubsub.data[key]?.list;
       if (currentList?.length > 0) {
         const latestItem = currentList[currentList.length - 1];
@@ -118,8 +141,12 @@ Maya.Store.pubsub = {
         });
       }
     };
+       
+    onUnload = async () => {
+      await Maya.Store.UnSubscribe({ topic: 'list-updated' })(this);
+    };
     onMessage = (options) => async (msg) => {
-      console.log("called");
+      console.log("IN");
       const listSize = msg.list.length;
       const latestItem = msg.list[msg.list.length - 1];
       Maya.Store.SetData({ store: 'childtwo', key: options.key })({
@@ -127,7 +154,7 @@ Maya.Store.pubsub = {
           latestItem
       });
       Maya.Store.pubsub.events.logMessage(options.key)(`📥 ChildTwo received 'list-updated' (${listSize} items)`);
-  }
+  };
   
     
   
