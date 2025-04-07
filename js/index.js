@@ -1,5 +1,3 @@
-
-
 // Store for managing state
 Maya.Store.pubsub = {
     name: 'pubsub',
@@ -57,7 +55,7 @@ Maya.Store.pubsub = {
             // Add the new item to the list
             currentList.push(newItem);
             // Update the store with the new list
-            Maya.Store.SetData({ store: 'pubsub', key: ev.key })({ list: currentList ,headers: currentData.headers});
+            Maya.Store.SetData({ store: 'pubsub', key: ev.key })({ list: currentList ,headers: currentData.headers});        
             Maya.Store.pubsub.events.logMessage(ev.key)(`📤 Published 'list-updated' (added ${newItem.name})`);
             // Update the store with the modified list and re-render the UI
             await Maya.Store.Publish({ topic: 'list-updated' })({ list: currentList,headers: currentData.headers });
@@ -78,7 +76,7 @@ Maya.Store.pubsub = {
     //No state management should be done in Component definition
     onLoad = async ev => {
         await Maya.Store.pubsub.events.initializeList(ev); // Initialize the list on load
-    };
+    };  
   }
   
   window.customElements.define('albert-pubsub', MayaPubSub);
@@ -101,36 +99,12 @@ Maya.Store.pubsub = {
     }
     isSecured = () => false
     // No state management should be done in Component definition
-    // onLoad = async (ev) => {
-    //   const key = ev.key;
-    //   this._key = key;
-    //   Maya.Store.Subscribe({ topic: 'list-updated' })(this);
-  
-    //   // ✅ Step 2: Fallback — manually sync if parent already has data
-    //   const currentList = Maya.Store.pubsub.data[key]?.list;
-    //   if (currentList?.length > 0) {
-    //     const latestItem = currentList[currentList.length - 1];
-    //     Maya.Store.SetData({ store: 'childtwo', key })({
-    //       listSize: currentList.length,
-    //       latestItem,
-    //       plural: currentList.length !== 1
-    //     });
-    //   }
-    // };
     onLoad = async (ev) => {
       const key = ev.key;
       this._key = key;
-    
-      const topic = 'list-updated';
-      const currentSubs = Maya.Store.subscriptions?.[topic] || [];
-    
-      const alreadySubscribed = currentSubs.some(sub => sub.getKey?.() === this.getKey());
-    
-      if (!alreadySubscribed) {
-        await Maya.Store.Subscribe({ topic })(this);
-      }
-    
-      // Fallback sync
+      Maya.Store.Subscribe({ topic: 'list-updated' })(this);
+  
+      // ✅ Step 2: Fallback — manually sync if parent already has data
       const currentList = Maya.Store.pubsub.data[key]?.list;
       if (currentList?.length > 0) {
         const latestItem = currentList[currentList.length - 1];
@@ -146,7 +120,6 @@ Maya.Store.pubsub = {
       await Maya.Store.UnSubscribe({ topic: 'list-updated' })(this);
     };
     onMessage = (options) => async (msg) => {
-      console.log("IN");
       const listSize = msg.list.length;
       const latestItem = msg.list[msg.list.length - 1];
       Maya.Store.SetData({ store: 'childtwo', key: options.key })({

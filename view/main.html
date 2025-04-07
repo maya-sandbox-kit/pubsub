@@ -19,8 +19,8 @@
             <input type="text" placeholder="Item Description" required />
           </maya-input>
         </div>
-        <albert-uibutton variant="outline" color="neutral" store="pubsub" operationId="addItem"> Submit</albert-uibutton>
-      </maya-form>
+        <albert-uibutton variant="outline" color="affirmative" store="pubsub" operationId="addItem"> Submit</albert-uibutton>
+      </maya-form> 
     </section>
 
     <!-- Item List Table -->
@@ -67,16 +67,26 @@
 
 <!-- Styles -->
 <style>
-   .layout-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  margin-top: 30px;
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 400px;
+    border: 1px solid var(--neutral-border);
+    border-radius: var(--radius-4);
+}
+  
+  .layout-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 30px;
 }
 
 .left-column, .right-column {
