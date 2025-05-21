@@ -9,17 +9,13 @@
       <maya-form store="pubsub" operationId="addItem">
         <div class="form-field">
           <label><strong>Item Name</strong></label><br />
-          <maya-input name="name" store="pubsub">
-            <input type="text" placeholder="Item Name" required />
-          </maya-input>
+          <albert-uiinput store="pubsub" key="{{key}}" name="name" type="text" placeholder="Item Name"></albert-uiinput>
         </div>
         <div class="form-field">
           <label><strong>Item Description</strong></label><br />
-          <maya-input name="description" store="pubsub">
-            <input type="text" placeholder="Item Description" required />
-          </maya-input>
+          <albert-uiinput store="pubsub" key="{{key}}" name="description" type="text" placeholder="Item Description"></albert-uiinput>
         </div>
-        <maya-button variant="outline" color="affirmative" store="pubsub" operationId="addItem"> Submit</maya-button>
+        <albert-uibutton variant="outline" color="primary" store="pubsub" operationId="addItem"> Submit</albert-uibutton>
       </maya-form> 
     </section>
 
